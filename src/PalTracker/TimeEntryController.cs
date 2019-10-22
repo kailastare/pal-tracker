@@ -1,9 +1,10 @@
-using System;
 using System.Collections;
+using Microsoft.AspNetCore.Mvc;
 
 namespace PalTracker
 {
-    public class TimeEntryController
+    [Route("/time-entries")]
+    public class TimeEntryController : ControllerBase
     {
         private ITimeEntryRepository @object;
 
@@ -12,29 +13,44 @@ namespace PalTracker
             this.@object = @object;
         }
 
-        public Microsoft.AspNetCore.Mvc.ActionResult Read(int id)
+        [HttpGet("{id}", Name="GetTimeEntry")]
+        public IActionResult Read(int id)
         {
-            throw new NotImplementedException();
+            return @object.Contains(id)? (IActionResult)Ok(@object.Find(id)):NotFound();
         }
 
-        public Microsoft.AspNetCore.Mvc.ActionResult Create(TimeEntry toCreate)
+        [HttpPost]
+        public IActionResult Create([FromBody]TimeEntry toCreate)
         {
-            throw new NotImplementedException();
+            var abc = @object.Create(toCreate);
+            return CreatedAtRoute("GetTimeEntry",new {Id = abc.Id},abc);
         }
 
-        public IEnumerable List()
+        [HttpGet]
+        public  IActionResult  List()
         {
-            throw new NotImplementedException();
+            return Ok(@object.List());
         }
 
-        public Microsoft.AspNetCore.Mvc.ActionResult Update(int id, TimeEntry theUpdate)
+        [HttpPut("{id}")]
+        public IActionResult Update(int id, [FromBody] TimeEntry theUpdate)
         {
-            throw new NotImplementedException();
+            if (@object.Contains(id))
+            {
+                return Ok(@object.Update(id, theUpdate));
+            }
+            return NotFound();           
         }
 
-        public Microsoft.AspNetCore.Mvc.ActionResult Delete(int id)
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            throw new NotImplementedException();
+            if (@object.Contains(id))
+            {
+                @object.Delete(id);
+                return NoContent();
+            }
+            return  NotFound();
         }
     }
 }

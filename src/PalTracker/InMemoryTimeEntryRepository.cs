@@ -26,9 +26,11 @@ namespace PalTracker
             return createdTimeEntry;
         }
 
-        public TimeEntry Find(int id)
+        public TimeEntry? Find(int id)
         {
-            return timeEntryList[id];
+            if(timeEntryList.ContainsKey(id))
+                        return timeEntryList[id];
+            return null;
         }
 
         public bool Contains(int v)

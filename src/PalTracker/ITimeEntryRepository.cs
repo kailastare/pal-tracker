@@ -8,7 +8,7 @@ namespace PalTracker
 
         TimeEntry Create(TimeEntry timeEntry);
 
-        TimeEntry Find(int v)
+        TimeEntry? Find(int v)
         ;
          IEnumerable<TimeEntry> List();
 
