@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Steeltoe.Management.CloudFoundry;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -39,6 +40,7 @@ namespace PalTracker
             ));
 
             services.AddSingleton<ITimeEntryRepository,InMemoryTimeEntryRepository>();
+            services.AddCloudFoundryActuators(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -55,6 +57,7 @@ namespace PalTracker
 
             app.UseHttpsRedirection();
             app.UseMvc();
+            app.UseCloudFoundryActuators();
         }
     }
 }
